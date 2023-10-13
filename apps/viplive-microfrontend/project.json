@@ -6,7 +6,7 @@
   "prefix": "microfrontend-template",
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@nrwl/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/viplive-microfrontend",
@@ -20,7 +20,11 @@
           "apps/viplive-microfrontend/src/assets"
         ],
         "styles": ["apps/viplive-microfrontend/src/styles.scss"],
-        "scripts": []
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/viplive-chats/webpack.config.js"
+        },
+        "commonChunk": false
       },
       "configurations": {
         "production": {
@@ -36,7 +40,10 @@
               "maximumError": "4kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/viplive-chats/webpack.prod.config.js"
+          }
         },
         "development": {
           "buildOptimizer": false,
@@ -50,7 +57,14 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@nrwl/angular:webpack-dev-server",
+      "options": {
+        "port": 4201,
+        "sslCert": "localhost.pem",
+        "sslKey": "localhost-key.pem",
+        "ssl": true,
+        "publicHost": "https://localhost:4203"
+      },
       "configurations": {
         "production": {
           "browserTarget": "viplive-microfrontend:build:production"
@@ -62,9 +76,10 @@
       "defaultConfiguration": "development"
     },
     "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "executor": "ngx-build-plus:extract-i18n",
       "options": {
-        "browserTarget": "viplive-microfrontend:build"
+        "browserTarget": "viplive-microfrontend:build",
+        "extraWebpackConfig": "apps/viplive-chats/webpack.config.js"
       }
     },
     "lint": {
@@ -92,5 +107,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:core"]
 }

@@ -18,11 +18,16 @@ node_modules
 *.sublime-workspace
 
 # IDE - VSCode
+.idea
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/snippets
+
+#IDE - VS
+.vs/*
 
 # misc
 /.sass-cache
@@ -38,4 +43,20 @@ testem.log
 .DS_Store
 Thumbs.db
 
+**/test-results.xml
+
+dist
+wwwroot
+
+# tests & sonar
+/unit-test-reports
+/coverage
+.scannerwork
+/node_modules/
+dep-graph.json
+localhost-key.pem
+localhost.pem
+/reports
+
 .angular
+.npmrc

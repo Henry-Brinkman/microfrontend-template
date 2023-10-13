@@ -1,0 +1,6 @@
+@fortawesome:registry=https://npm.fontawesome.com/
+//npm.fontawesome.com/:_authToken=${FONT_AWESOME_KEY}
+git-tag-version=false
+commit-hooks=false
+@topicus-rgp-ds:registry=https://npm.cloudsmith.io/topicus-healthcare/designsystem/
+//npm.cloudsmith.io/topicus-healthcare/designsystem/:_authToken=${CLOUDSMITH_DESIGNSYSTEM_AUTH_TOKEN}

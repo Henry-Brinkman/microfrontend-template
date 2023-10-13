@@ -1,11 +1,91 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx"],
+  "plugins": ["@nrwl/nx", "@angular-eslint", "jest", "ban"],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": ["*.ts", "*.tsx"],
+      "parserOptions": {
+        "project": "./tsconfig.*?.json"
+      },
+      "extends": [
+        "eslint:recommended",
+        "plugin:@angular-eslint/ng-cli-compat",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@nrwl/nx/typescript"
+      ],
       "rules": {
+        "@angular-eslint/directive-class-suffix": "off",
+        "@angular-eslint/no-host-metadata-property": "off",
+        "@angular-eslint/use-component-view-encapsulation": 1,
+        "@typescript-eslint/array-type": [
+          1,
+          {
+            "default": "array"
+          }
+        ],
+        "@typescript-eslint/consistent-type-definitions": "error",
+        "@typescript-eslint/dot-notation": "off",
+        "@typescript-eslint/no-empty-interface": [
+          "error",
+          {
+            "allowSingleExtends": true
+          }
+        ],
+        "@typescript-eslint/explicit-member-accessibility": [
+          "error",
+          {
+            "accessibility": "explicit",
+            "overrides": {
+              "accessors": "off",
+              "constructors": "no-public",
+              "methods": "explicit",
+              "properties": "explicit",
+              "parameterProperties": "explicit"
+            }
+          }
+        ],
+        "@typescript-eslint/typedef": [
+          "error",
+          {
+            "parameter": true,
+            "propertyDeclaration": true
+          }
+        ],
+        "@typescript-eslint/member-ordering": 0,
+        "@typescript-eslint/no-empty-function": 1,
+        "@typescript-eslint/consistent-type-assertions": 1,
+        "no-useless-escape": 1,
+        "no-prototype-builtins": 1,
+        "@typescript-eslint/ban-types": 1,
+        "prefer-spread": 1,
+        "@typescript-eslint/prefer-for-of": 1,
+        "@typescript-eslint/no-var-requires": 1,
+        "@typescript-eslint/no-explicit-any": 1,
+        "@angular-eslint/no-output-native": 1,
+        "no-extra-boolean-cast": 1,
+        "semi": "error",
+        "no-unreachable": "error",
+        "@typescript-eslint/no-inferrable-types": "off",
+        "@typescript-eslint/naming-convention": [
+          1,
+          {
+            "selector": "enumMember",
+            "format": ["PascalCase"],
+            "leadingUnderscore": "forbid",
+            "trailingUnderscore": "forbid"
+          }
+        ],
+        "prefer-const": "off",
+        "prefer-arrow/prefer-arrow-functions": "off",
+        "brace-style": ["error", "1tbs"],
+        "id-blacklist": "error",
+        "max-len": "off",
+        "no-empty": "error",
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"],
+        "object-shorthand": "off",
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {
@@ -13,8 +93,94 @@
             "allow": [],
             "depConstraints": [
               {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "sourceTag": "scope:core",
+                "onlyDependOnLibsWithTags": [
+                  "scope:voorbeeld",
+                  "scope:shared"
+                ]
+              },
+              {
+                "sourceTag": "scope:voorbeeld",
+                "onlyDependOnLibsWithTags": ["scope:voorbeeld", "scope:shared"]
+              },
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
+              },
+              {
+                "sourceTag": "type:data",
+                "onlyDependOnLibsWithTags": ["type:data"]
+              },
+              {
+                "sourceTag": "type:feature",
+                "onlyDependOnLibsWithTags": ["type:data", "type:feature", "type:ui", "type:util"]
+              },
+              {
+                "sourceTag": "type:ui",
+                "onlyDependOnLibsWithTags": ["type:ui"]
+              },
+              {
+                "sourceTag": "type:util",
+                "onlyDependOnLibsWithTags": ["type:util"]
+              }
+            ]
+          }
+        ],
+        "@typescript-eslint/no-unnecessary-type-constraint": "off",
+        "@typescript-eslint/explicit-function-return-type": [
+          "error",
+          {
+            "allowExpressions": true
+          }
+        ],
+        "ban/ban": [
+          "error",
+          {
+            "name": "alert",
+            "message": "Gebruik geen JavaScript alert"
+          },
+          {
+            "name": "debug",
+            "message": "Gebruik geen debug in productiecode"
+          }
+        ],
+        "no-duplicate-imports": "error",
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              {
+                "name": "@ngneat/spectator",
+                "importNames": [
+                  "createComponentFactory",
+                  "createHostFactory",
+                  "createHttpFactory",
+                  "createRoutingFactory",
+                  "createServiceFactory",
+                  "mockProvider",
+                  "HttpMethod",
+                  "Spectator",
+                  "SpectatorHost",
+                  "SpectatorHttp",
+                  "SpectatorRouting",
+                  "SpectatorService",
+                  "SpyObject"
+                ],
+                "message": "Gebruik ngneat-spectator-jest"
+              }
+            ],
+            "patterns": [
+              {
+                "group": ["!@ngneat/spectator/jest"],
+                "message": "Gebruik ngneat spectator jest"
+              },
+              {
+                "group": ["rxjs/internal/*"],
+                "message": "Gebruik rxjs direct ipv de internal"
+              },
+              {
+                "group": ["@ngneat/spectator/jest/*"],
+                "message": "Gebruik ngneat jest direct ipv de internal"
               }
             ]
           }
@@ -22,21 +188,25 @@
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {}
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
-      "rules": {}
-    },
-    {
-      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
-      "env": {
-        "jest": true
+      "files": ["*.spec.ts"],
+      "parserOptions": {
+        "project": "./tsconfig.spec.json"
       },
-      "rules": {}
+      "extends": ["plugin:jest/recommended"],
+      "rules": {
+        "jest/no-done-callback": "off",
+        "jest/valid-title": "off",
+        "jest/no-conditional-expect": "warn",
+        "@nrwl/nx/enforce-module-boundaries": "error"
+      }
+    },
+    {
+      "files": ["*.html"],
+      "parser": "@angular-eslint/template-parser",
+      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "rules": {
+        "quotes": ["error", "double"]
+      }
     }
   ]
 }
